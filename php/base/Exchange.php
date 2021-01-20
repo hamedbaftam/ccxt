@@ -274,10 +274,31 @@ class Exchange {
         return isset($value) ? $value : static::safe_value($object, $key2, $default_value);
     }
 
-    public static function truncate($number, $precision = 0) {
-        $decimal_precision = pow(10, $precision);
-        return floor(floatval($number * $decimal_precision)) / $decimal_precision;
+
+// this methods has small bug :
+// truncate('12.12','2')
+// result : 12.11
+
+ //   public static function truncate($number, $precision = 0) {
+ //       $decimal_precision = pow(10, $precision);
+ //       return floor(floatval($number * $decimal_precision)) / $decimal_precision;
+ //   }
+
+ 
+
+
+
+// truncate('12.12','2')
+// result : 12.12
+    function truncate($val, $f = "0")
+    {
+        if (($p = strpos($val, '.')) !== false) {
+            $val = floatval(substr($val, 0, $p + 1 + $f));
+        }
+        return $val;
     }
+
+
 
     public static function truncate_to_string($number, $precision = 0) {
         if ($precision > 0) {
